@@ -8,6 +8,3 @@ end
 
 % Create multivariate gaussian distribution
 dataset = mvnrnd(mu, SIGMA, nExamples);
-
-% Plot distribution
-% plot(dataset(:,1), dataset(:,2), '+');
