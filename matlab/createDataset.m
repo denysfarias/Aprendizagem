@@ -29,7 +29,7 @@ datasetClasses = [ones(size(datasetC1,1),1); 2*ones(size(datasetC2,1),1)];
 [trainIndices, testIndices] = crossvalind('HoldOut', datasetClasses, 1.0 - trainFraction);
 
 % Plot distribution
-disp('%Plotando os gráficos projetados.');
+disp('%Plotting generated distributions.');
 figure;
 gscatter(dataset(:,1), dataset(:,2), datasetClasses, 'rbg', 'o', 5, 0);
 title('Dataset distribution', 'FontWeight','Bold','FontSize',14);
