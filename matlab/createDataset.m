@@ -18,9 +18,12 @@ sigmaC3 = [2^2 -1.7; -1.7 1^2];
 nExamplesC3 = 50;
 datasetC3 = createDistribution(muC3, sigmaC3, nExamplesC3);
 
+% Class 3 as subclass of Class 2
+datasetC2 = [datasetC2; datasetC3];
+
 % Create total dataset
-dataset = [datasetC1; datasetC2; datasetC3];
-datasetClasses = [ones(size(datasetC1,1),1); 2*ones(size(datasetC2,1),1); 3*ones(size(datasetC3,1),1)];
+dataset = [datasetC1; datasetC2];
+datasetClasses = [ones(size(datasetC1,1),1); 2*ones(size(datasetC2,1),1)];
 
 % Divide train/test sets
 [trainIndices, testIndices] = crossvalind('HoldOut', datasetClasses, 1.0 - trainFraction);
