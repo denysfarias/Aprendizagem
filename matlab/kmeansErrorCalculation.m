@@ -10,18 +10,30 @@ classesCentroids = [mean(dataset(datasetClasses == 1, :));
 % Define clusters classes
 clustersClasses = knnsearch(classesCentroids, kmeansCentroids);
 
+c1ClusterIndex = knnsearch(kmeansCentroids, classesCentroids(1,:));
+
+c2ClusterIndex = 1;
+if c1ClusterIndex == 1
+    c2ClusterIndex = 2;
+end
+
 % Find classification by centroids
+tmp = 9999;
+
 c1ClassificationByCentroids = knnsearch(kmeansCentroids, dataset(datasetClasses == 1, :));
-c1ClassificationByCentroids(c1ClassificationByCentroids == 1) = clustersClasses(1);
-c1ClassificationByCentroids(c1ClassificationByCentroids == 2) = clustersClasses(2);
+c1ClassificationByCentroids(c1ClassificationByCentroids == c1ClusterIndex) = tmp;
+c1ClassificationByCentroids(c1ClassificationByCentroids == c2ClusterIndex) = clustersClasses(c2ClusterIndex);
+c1ClassificationByCentroids(c1ClassificationByCentroids == tmp) = clustersClasses(c1ClusterIndex);
 
 c2ClassificationByCentroids = knnsearch(kmeansCentroids, dataset(datasetClasses == 2, :));
-c2ClassificationByCentroids(c2ClassificationByCentroids == 1) = clustersClasses(1);
-c2ClassificationByCentroids(c2ClassificationByCentroids == 2) = clustersClasses(2);
+c2ClassificationByCentroids(c2ClassificationByCentroids == c1ClusterIndex) = tmp;
+c2ClassificationByCentroids(c2ClassificationByCentroids == c2ClusterIndex) = clustersClasses(c2ClusterIndex);
+c2ClassificationByCentroids(c2ClassificationByCentroids == tmp) = clustersClasses(c1ClusterIndex);
 
 classificationByCentroids = kmeansIndices;
-classificationByCentroids(classificationByCentroids == 1) = clustersClasses(1);
-classificationByCentroids(classificationByCentroids == 2) = clustersClasses(2);
+classificationByCentroids(classificationByCentroids == c1ClusterIndex) = tmp;
+classificationByCentroids(classificationByCentroids == c2ClusterIndex) = clustersClasses(c2ClusterIndex);
+classificationByCentroids(classificationByCentroids == tmp) = clustersClasses(c1ClusterIndex);
 
 % Calculate error per class
 nC1CorrectlyAssigned = sum(c1ClassificationByCentroids == 1);
