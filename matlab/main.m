@@ -6,16 +6,18 @@
 [pPerClassError, pGlobalError, adjustedRandIndex] = kmeansErrorCalculation(dataset,datasetClasses);
 
 % Dividing train/test datasets
-trainDataset = dataset(trainIndices,:);
-trainDatasetClasses = datasetClasses(trainIndices);
-testDataset = dataset(testIndices,:);
-testDatasetClasses = datasetClasses(testIndices);
+[trainDataset, trainDatasetClasses, testDataset, testDatasetClasses] = divideDataset(dataset, datasetClasses, trainIndices);
 
 %% Question 2.a
 % Classify test dataset by estimating a posteriori probabilities through
 % probability density from MLE (first class) and EM (second class)
-globalErrorRate = classifyByMleEm(dataset, trainDataset, trainDatasetClasses, testDataset, testDatasetClasses, subclassesIndices, trainIndices);
+globalErrorRate = classifyByMleEm(dataset, datasetClasses, trainIndices, subclassesIndices);
 
 %% Question 2.b
 % Classify test dataset by estimating a posteriori probabilities through
 % parzen window and kernel function
+globalErrors = classifyByParzenWindow(dataset, datasetClasses, trainIndices);
+
+%% Question 2.c
+% Classify test dataset by estimating a posteriori probabilities through
+% k-nn.

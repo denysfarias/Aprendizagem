@@ -1,4 +1,6 @@
-function globalErrorRate = classifyByMleEm(dataset, trainDataset, trainDatasetClasses, testDataset, testDatasetClasses, subclassesIndices, trainIndices)
+function globalErrorRate = classifyByMleEm(dataset, datasetClasses, trainIndices, subclassesIndices)
+
+[trainDataset, trainDatasetClasses, testDataset, testDatasetClasses] = divideDataset(dataset, datasetClasses, trainIndices);
 
 c1TrainDataset = trainDataset(trainDatasetClasses == 1,:);
 c1MU = mean(c1TrainDataset);
