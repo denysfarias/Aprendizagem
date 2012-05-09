@@ -1,4 +1,4 @@
-function [dataset, datasetClasses, trainIndices, testIndices] = createDataset(trainFraction)
+function [dataset, datasetClasses, trainIndices, testIndices, subclassesIndices] = createDataset(trainFraction)
 
 % Create distribution for class 1
 muC1 = [0 0];
@@ -17,6 +17,8 @@ muC3 = [4 3];
 sigmaC3 = [2^2 -1.7; -1.7 1^2];
 nExamplesC3 = 50;
 datasetC3 = createDistribution(muC3, sigmaC3, nExamplesC3);
+
+subclassesIndices = [ones(size(datasetC1,1),1); 2*ones(size(datasetC2,1),1); 3*ones(size(datasetC3,1),1)];
 
 % Class 3 as subclass of Class 2
 datasetC2 = [datasetC2; datasetC3];
