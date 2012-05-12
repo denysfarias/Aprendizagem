@@ -37,7 +37,7 @@ for k = kArray
         % Calculate a posteriori probabilities
         postProbMatrix(:,l,k) = sum(neighborClassification == l,2)/k;
     end
-    [majorVotes, testClassification] = max(postProbMatrix(:,:,k),[],2);
+    [~, testClassification] = max(postProbMatrix(:,:,k),[],2);
     
     % Calculate global error for each k
     globalErrorArray(i) = sum(testClassification ~= testDatasetClasses)/size(testDatasetClasses, 1);

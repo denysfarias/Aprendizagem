@@ -1,4 +1,20 @@
-function [pPerClassError, pGlobalError, adjustedRandIndex] = kmeansErrorCalculation(dataset,datasetClasses)
+function [pPerClassError, pGlobalError, adjustedRandIndex] = kmeansErrorCalculation(dataset,datasetClasses, plotClusters)
+%KMEANSERRORCALCULATION Calculate kmeans for dataset and returns global and per class errors.
+%
+% INPUT:
+% dataset (n,j): n samples with j attributes.
+% datasetClasses (n,1): classes for the n samples of dataset.
+% trainIndices (n,1): logical vector defining train samples.
+% subclassesIndices (n,1): subclasses for the n samples of dataset.
+% plotClusters (logical): plots generated clusters.
+%
+% OUTPUT:
+% globalErrorRate (1,1): value of global error.
+% classErrorVector (2,1): error vector for 2 classes.
+% postProbMatrix (n,2): posteriori probabilities of n samples for 2
+% classes.
+%
+% {dlf2,dvro}@cin.ufpe.br
 
 % Apply k-means 100 times for 2 clusters
 [kmeansIndices, kmeansCentroids] = kmeans(dataset, 2, 'replicates', 100);
@@ -47,9 +63,11 @@ pGlobalError = 1- (nC1CorrectlyAssigned + nC2CorrectlyAssigned)/size(dataset,1);
 % Calculate Rand
 adjustedRandIndex = RandIndex(kmeansIndices, datasetClasses);
 
-% Plot clusters
-disp('%Plotting identified clusters.');
-figure;
-gscatter(dataset(:,1), dataset(:,2), classificationByCentroids, 'rbg', 'o', 5, 0);
-title('Clusters', 'FontWeight','Bold','FontSize',14);
+if (plotClusters)
+    % Plot clusters
+    disp('% Plotting identified clusters.');
+    figure;
+    gscatter(dataset(:,1), dataset(:,2), classificationByCentroids, 'rbg', 'o', 5, 0);
+    title('Clusters', 'FontWeight','Bold','FontSize',14);
+end
 drawnow;

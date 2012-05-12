@@ -25,7 +25,8 @@ c2PriorProb = sum(datasetClasses == 2)/numel(datasetClasses);
 % Initialize variables
 m = size(dataset(~trainIndices),1);
 R = size(classifiersPostProbMatrix,3);
-postProbMatrix = (1-R)*[c1PriorProb*ones(m,1) c2PriorProb*ones(m,1)];
+%postProbMatrix = (1-R)*[c1PriorProb*ones(m,1) c2PriorProb*ones(m,1)];
+postProbMatrix = zeros(m,2);
 testDatasetClasses = datasetClasses(~trainIndices);
 
 % Calculate combined a posteriori probabilities
