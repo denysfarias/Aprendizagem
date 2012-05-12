@@ -1,8 +1,6 @@
-function [globalErrorRate, classErrorVector, posterioriProbabilityMatrix] = classifyByMleEm(dataset, datasetClasses, trainIndices, subclassesIndices)
-%CLASSIFYBYMLEEM Mle/Em classification
-% [globalErrorRate, classErrorMatrix, posterioriProbMatrix] = classifyByMleEm(dataset,datasetClasses,trainIndices, subclassesIndices)
-% returns global error, class errors and a posteriori probabilities for MLE
-% (class 1) and EM (class 2) classification.
+function [globalErrorRate, classErrorVector, postProbMatrix] = classifyByMleEm(dataset, datasetClasses, trainIndices, subclassesIndices)
+%CLASSIFYBYMLEEM Mle (class 1) and EM (class 2) classification which
+%returns global error, class errors and a posteriori probabilities.
 % 
 % INPUT:
 % dataset (n,j): n samples with j attributes.
@@ -12,8 +10,8 @@ function [globalErrorRate, classErrorVector, posterioriProbabilityMatrix] = clas
 %
 % OUTPUT:
 % globalErrorRate (1,1): value of global error.
-% classErrorVector (c,1): error vector for c classes.
-% posterioriProbMatrix (n,c): posteriori probabilities of n samples for c
+% classErrorVector (2,1): error vector for 2 classes.
+% postProbMatrix (n,2): posteriori probabilities of n samples for 2
 % classes.
 %
 % {dlf2,dvro}@cin.ufpe.br
@@ -70,4 +68,4 @@ classErrorVector(1) = sum(finalClassification(c1Indices) ~= 1)/sum(c1Indices);
 classErrorVector(2) = sum(finalClassification(c2Indices) ~= 2)/sum(c2Indices);
 
 % Calculate a posteriori probabilities
-posterioriProbabilityMatrix = [c1pdf./(c1pdf + c2pdf) c2pdf./(c1pdf + c2pdf)];
+postProbMatrix = [c1pdf./(c1pdf + c2pdf) c2pdf./(c1pdf + c2pdf)];

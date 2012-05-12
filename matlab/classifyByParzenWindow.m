@@ -1,4 +1,4 @@
-function [globalErrorArray, classErrorMatrix, posterioriProbMatrix, h_nRef] = ...
+function [globalErrorArray, classErrorMatrix, postProbMatrix, h_nRef] = ...
     classifyByParzenWindow(dataset, datasetClasses, trainIndices)
 %CLASSIFYBYPARZENWINDOW Classification based on Parzen Window (smoothing density
 %estimation), which returns returns global errors, class errors and a
@@ -15,8 +15,8 @@ function [globalErrorArray, classErrorMatrix, posterioriProbMatrix, h_nRef] = ..
 % h_nRef element.
 % classErrorMatrix (c,nComb): error matrix for c classes and for each
 % h_nRef element.
-% posterioriProbMatrix (m,c,nComb): posteriori probabilities of m test
-% samples for c classes for each h_nRef element.
+% postProbMatrix (m,2,nComb): posteriori probabilities of m test
+% samples for 2 classes for each h_nRef element.
 % % h_nRef (nComb,2): combinations of h_1 and h_2.
 %
 % {dlf2,dvro}@cin.ufpe.br
@@ -34,7 +34,7 @@ m = size(testDataset,1);
 nComb = size(h_nMatrix,2)^2;
 globalErrorArray = zeros(1,nComb);
 classErrorMatrix = zeros(2,nComb);
-posterioriProbMatrix = zeros(m,2,nComb);
+postProbMatrix = zeros(m,2,nComb);
 h_nRef = zeros(nComb,2);
 inComb = 1;
 
@@ -65,7 +65,7 @@ for h_1 = h_nMatrix(1,:)
             sum(finalClassification(logicalC2Position) ~= 2)/sum(logicalC2Position)];
         
         % Calculate a posteriori probabilities
-        posterioriProbMatrix(:,:,inComb) = [c1pdf./(c1pdf + c2pdf) c2pdf./(c1pdf + c2pdf)];
+        postProbMatrix(:,:,inComb) = [c1pdf./(c1pdf + c2pdf) c2pdf./(c1pdf + c2pdf)];
 
         inComb = inComb+1;
     end

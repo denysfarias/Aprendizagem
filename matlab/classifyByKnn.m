@@ -1,8 +1,6 @@
-function [globalErrorArray, classErrorMatrix, posterioriProbMatrix] = classifyByKnn(dataset, datasetClasses, trainIndices)
-%CLASSIFYBYKNN Knn classification
-% [globalErrorArray, classErrorMatrix, posterioriProbMatrix] = classifyByKnn(dataset,datasetClasses,trainIndices)
-% returns global errors, class errors and a posteriori probabilities for
-% each k in kArray (bult-in set) used in classification.
+function [globalErrorArray, classErrorMatrix, postProbMatrix] = classifyByKnn(dataset, datasetClasses, trainIndices)
+%CLASSIFYBYKNN Knn classification which returns global errors, class errors and a posteriori probabilities for
+% each k in kArray (bult-in set).
 % 
 % INPUT:
 % dataset (n,j): n samples with j attributes.
@@ -12,7 +10,7 @@ function [globalErrorArray, classErrorMatrix, posterioriProbMatrix] = classifyBy
 % OUTPUT:
 % globalErrorArray (1,k): array of k global errors.
 % classErrorMatrix (c,k): error matrix for c classes and k neighbors.
-% posterioriProbMatrix (n,c,k): posteriori probabilities of n samples for c
+% postProbMatrix (n,c,k): posteriori probabilities of n samples for c
 % classes for each k.
 %
 % {dlf2,dvro}@cin.ufpe.br
@@ -28,7 +26,7 @@ nClassMax = max([trainDatasetClasses; testDatasetClasses]);
 % Allocate output matrices
 globalErrorArray = zeros(1, numel(kArray));
 classErrorMatrix = zeros(nClassMax, numel(kArray));
-posterioriProbMatrix = zeros(nTest, nClassMax, numel(kArray));
+postProbMatrix = zeros(nTest, nClassMax, numel(kArray));
 
 % Classify samples for every k in kArray
 i = 1;
@@ -37,9 +35,9 @@ for k = kArray
     neighborClassification = trainDatasetClasses(neighborIndices);
     for l = 1:nClassMax
         % Calculate a posteriori probabilities
-        posterioriProbMatrix(:,l,k) = sum(neighborClassification == l,2)/k;
+        postProbMatrix(:,l,k) = sum(neighborClassification == l,2)/k;
     end
-    [majorVotes, testClassification] = max(posterioriProbMatrix(:,:,k),[],2);
+    [majorVotes, testClassification] = max(postProbMatrix(:,:,k),[],2);
     
     % Calculate global error for each k
     globalErrorArray(i) = sum(testClassification ~= testDatasetClasses)/size(testDatasetClasses, 1);
