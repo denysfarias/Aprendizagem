@@ -25,6 +25,7 @@ globalErrorPerRoundMatrix = zeros(nIterations, 4);
 classErrorPerRoundMatrix = zeros(nIterations, 2, 4);
 kmeansGlobalErrorPerRoundVector = zeros(nIterations, 1);
 kmeansClassErrorPerRoundMatrix = zeros(nIterations, 2);
+bestCombs = zeros(25,1);
 
 for i = 1:nIterations
     fprintf('[Iteration %i]\n',i);
@@ -58,9 +59,12 @@ for i = 1:nIterations
     % question 2.d
     classifiersPostProbMatrix = zeros(size(q21postProbMatrix,1), 2, 3);
     classifiersPostProbMatrix(:,:,1) = q21postProbMatrix;
-    [~, bestComb] = min((sum(q22classErrorMatrix,1) + q22globalErrorArray), [], 2);
+    %[~, bestComb] = min((sum(q22classErrorMatrix,1) + q22globalErrorArray), [], 2);
+    %bestCombs(bestComb) = bestCombs(bestComb) + 1;
+    bestComb = 8; % h_1 = 10, h_2 = 5
     classifiersPostProbMatrix(:,:,2) = q22postProbMatrix(:,:,bestComb);
-    [~, bestK] = min((sum(q23classErrorMatrix,1) + q23globalErrorArray), [], 2);
+    %[~, bestK] = min((sum(q23classErrorMatrix,1) + q23globalErrorArray), [], 2);
+    bestK = 2; % k = 3
     classifiersPostProbMatrix(:,:,3) = q23postProbMatrix(:,:,bestK);
 
     %% Question 2.d
