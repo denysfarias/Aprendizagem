@@ -1,19 +1,39 @@
-%% Question 1
-% Create dataset
-[dataset, datasetClassVector, subclassIndexVector] = createDistributions();
-disp('% Distributions generated.');
+clear; clc;
 
-nIterations = 10;
-globalErrorPerRoundMatrix = zeros(nIterations, 5);
+%% Question 1
+% Create dataset (if does not exist)
+if (exist('dataset.xls','file') + exist('datasetClassVector.xls','file') + exist('subclassIndexVector.xls','file') ~= 3*2)
+    [dataset, datasetClassVector, subclassIndexVector] = createDistributions();
+    disp('% Distributions generated.');
+else
+    % Load dataset (if does exist)
+    dataset = xlsread('dataset.xls');
+    datasetClassVector = xlsread('datasetClassVector.xls');
+    subclassIndexVector = xlsread('subclassIndexVector.xls'); 
+end
+
+% Plot distribution
+disp('%Plotting generated distributions.');
+figure;
+gscatter(dataset(:,1), dataset(:,2), subclassIndexVector, 'rbg', 'o', 5, 0);
+title('Generated distributions', 'FontWeight','Bold','FontSize',14);
+drawnow;
+
+% Initialize variables
+nIterations = 50;
+globalErrorPerRoundMatrix = zeros(nIterations, 4);
+classErrorPerRoundMatrix = zeros(nIterations, 2, 4);
+kmeansGlobalErrorPerRoundVector = zeros(nIterations, 1);
+kmeansClassErrorPerRoundMatrix = zeros(nIterations, 2);
+
 for i = 1:nIterations
-    itText = sprintf('% [Iteration %i]\n',i);
-    disp(itText);
+    fprintf('[Iteration %i]\n',i);
     % Divide dataset
     [trainIndexVector,testIndexVector] = crossValidationHoldout(datasetClassVector,0.7);
     disp('% Dataset divided.');
     
     % Calculate kmeans errors and adjusted rand index
-    [q1pPerClassError, q1pGlobalError, q1adjustedRandIndex] = kmeansErrorCalculation(dataset,datasetClassVector, i == 1);
+    [q1pGlobalError, q1pPerClassError, q1adjustedRandIndex] = kmeansErrorCalculation(dataset,datasetClassVector, i == 1);
     disp('% Kmeans calculated.');
     
     %% Question 2.a
@@ -50,15 +70,29 @@ for i = 1:nIterations
     disp('% Classifiers combination calculated.');
     
     % Preparing global error matrix for comparison
-    globalErrorPerRoundMatrix(i,1) = q1pGlobalError;
-    globalErrorPerRoundMatrix(i,2) = q21globalErrorRate;
-    globalErrorPerRoundMatrix(i,3) = q22globalErrorArray(bestComb);
-    globalErrorPerRoundMatrix(i,4) = q23globalErrorArray(bestK);
-    globalErrorPerRoundMatrix(i,5) = q24globalErrorRate;
+    globalErrorPerRoundMatrix(i,1) = q21globalErrorRate;
+    globalErrorPerRoundMatrix(i,2) = q22globalErrorArray(bestComb);
+    globalErrorPerRoundMatrix(i,3) = q23globalErrorArray(bestK);
+    globalErrorPerRoundMatrix(i,4) = q24globalErrorRate;
+    
+    % Collecting results to present
+    classErrorPerRoundMatrix(i,:,1) = q21classErrorVector;
+    classErrorPerRoundMatrix(i,:,2) = q22classErrorMatrix(:,bestComb);
+    classErrorPerRoundMatrix(i,:,3) = q23classErrorMatrix(:,bestK);
+    classErrorPerRoundMatrix(i,:,4) = q24classErrorVector;
+    
+    kmeansGlobalErrorPerRoundVector(i) = q1pGlobalError;
+    kmeansClassErrorPerRoundMatrix(i,:) = q1pPerClassError;
 end
 
 %% Evaluate and compare classifiers
-% TODO
+[hVector, pValueVector, combMatrix] = compareClassifiers(globalErrorPerRoundMatrix);
 
 %% Format results
-% TODO
+[st1, msg1] = xlswrite('kmeansGlobalErrorPerRoundVector.xls', kmeansGlobalErrorPerRoundVector);
+[st2, msg2] = xlswrite('kmeansClassErrorPerRoundMatrix.xls', kmeansClassErrorPerRoundMatrix);
+[st3, msg3] = xlswrite('globalErrorPerRoundMatrix.xls', globalErrorPerRoundMatrix);
+[st4, msg4] = xlswrite('classErrorPerRoundMatrixClassifier1.xls', classErrorPerRoundMatrix(:,:,1));
+[st5, msg5] = xlswrite('classErrorPerRoundMatrixClassifier2.xls', classErrorPerRoundMatrix(:,:,2));
+[st6, msg6] = xlswrite('classErrorPerRoundMatrixClassifier3.xls', classErrorPerRoundMatrix(:,:,3));
+[st7, msg7] = xlswrite('classErrorPerRoundMatrixClassifier4.xls', classErrorPerRoundMatrix(:,:,4));

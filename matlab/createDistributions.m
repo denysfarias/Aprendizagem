@@ -36,9 +36,7 @@ datasetC2 = [datasetC2; datasetC3];
 dataset = [datasetC1; datasetC2];
 datasetClassVector = [ones(size(datasetC1,1),1); 2*ones(size(datasetC2,1),1)];
 
-% Plot distribution
-disp('%Plotting generated distributions.');
-figure;
-gscatter(dataset(:,1), dataset(:,2), subclassIndexVector, 'rbg', 'o', 5, 0);
-title('Generated distributions', 'FontWeight','Bold','FontSize',14);
-drawnow;
+% Save dataset, classes and subclasses
+[status1, msg1] = xlswrite('dataset.xls', dataset);
+[status2, msg2] = xlswrite('datasetClassVector.xls', datasetClassVector);
+[status3, msg3] = xlswrite('subclassIndexVector.xls', subclassIndexVector);

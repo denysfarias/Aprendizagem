@@ -1,4 +1,4 @@
-function [pPerClassError, pGlobalError, adjustedRandIndex] = kmeansErrorCalculation(dataset,datasetClasses, plotClusters)
+function [pGlobalError, pPerClassError, adjustedRandIndex] = kmeansErrorCalculation(dataset,datasetClasses, plotClusters)
 %KMEANSERRORCALCULATION Calculate kmeans for dataset and returns global and per class errors.
 %
 % INPUT:
@@ -9,10 +9,9 @@ function [pPerClassError, pGlobalError, adjustedRandIndex] = kmeansErrorCalculat
 % plotClusters (logical): plots generated clusters.
 %
 % OUTPUT:
-% globalErrorRate (1,1): value of global error.
-% classErrorVector (2,1): error vector for 2 classes.
-% postProbMatrix (n,2): posteriori probabilities of n samples for 2
-% classes.
+% pGlobalError (1,1): value of global error.
+% pPerClassError (2,1): error vector for 2 classes.
+% adjustedRandIndex (1,1): calculated adjusted rand index.
 %
 % {dlf2,dvro}@cin.ufpe.br
 
