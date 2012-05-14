@@ -1,3 +1,5 @@
+% {dlf2,dvro}@cin.ufpe.br
+
 clear; clc;
 
 %% Question 1
@@ -25,6 +27,7 @@ globalErrorPerRoundMatrix = zeros(nIterations, 4);
 classErrorPerRoundMatrix = zeros(nIterations, 2, 4);
 kmeansGlobalErrorPerRoundVector = zeros(nIterations, 1);
 kmeansClassErrorPerRoundMatrix = zeros(nIterations, 2);
+kmeansAdjustedRandIndexVector = zeros(nIterations,1);
 bestCombs = zeros(25,1);
 
 for i = 1:nIterations
@@ -87,6 +90,7 @@ for i = 1:nIterations
     
     kmeansGlobalErrorPerRoundVector(i) = q1pGlobalError;
     kmeansClassErrorPerRoundMatrix(i,:) = q1pPerClassError;
+    kmeansAdjustedRandIndexVector(i) = q1adjustedRandIndex;
 end
 
 %% Evaluate and compare classifiers
@@ -100,3 +104,7 @@ end
 [st5, msg5] = xlswrite('classErrorPerRoundMatrixClassifier2.xls', classErrorPerRoundMatrix(:,:,2));
 [st6, msg6] = xlswrite('classErrorPerRoundMatrixClassifier3.xls', classErrorPerRoundMatrix(:,:,3));
 [st7, msg7] = xlswrite('classErrorPerRoundMatrixClassifier4.xls', classErrorPerRoundMatrix(:,:,4));
+[st8, msg8] = xlswrite('kmeansAdjustedRandIndexVector.xls', kmeansAdjustedRandIndexVector);
+[st9, msg9] = xlswrite('hVector.xls', hVector);
+[st10, msg10] = xlswrite('pValueVector.xls', pValueVector);
+[st11, msg11] = xlswrite('combMatrix.xls', combMatrix);

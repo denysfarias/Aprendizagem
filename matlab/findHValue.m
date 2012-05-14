@@ -1,3 +1,5 @@
+% {dlf2,dvro}@cin.ufpe.br
+
 dataset = xlsread('dataset.xls');
 datasetClassVector = xlsread('datasetClassVector.xls');
 subclassIndexVector = xlsread('subclassIndexVector.xls');
